@@ -1,4 +1,4 @@
-use crate::{
+use crate::game::{
     board::Board,
     components::{PlaceResult, TileType},
 };

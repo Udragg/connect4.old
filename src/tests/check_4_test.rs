@@ -1,6 +1,5 @@
 // #[cfg(test)]
-use crate::board::Board;
-use crate::components::TileType::*;
+use crate::game::{board::Board, components::TileType::*};
 #[test]
 fn test_detect_4_right() {
     let mut b = Board::default();

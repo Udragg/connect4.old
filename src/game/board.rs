@@ -1,4 +1,4 @@
-use crate::components::{PlaceResult, TileType};
+use crate::game::components::{PlaceResult, TileType};
 use std::{fmt, vec};
 
 /// Struct containing board variables & logic
