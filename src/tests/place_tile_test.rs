@@ -27,7 +27,7 @@ fn test_column_overflow() {
 }
 
 #[test]
-fn test_row_overflow() {
+fn test_row_high() {
     let mut b = Board::default();
     let t = TileType::Player1;
 
@@ -35,9 +35,25 @@ fn test_row_overflow() {
 }
 
 #[test]
-fn test_row_underflow() {
+fn test_row_low() {
     let mut b = Board::default();
     let t = TileType::Player1;
 
     assert_eq!(b.place_tile(0, t), PlaceResult::InvalidColumn);
+}
+
+#[test]
+fn test_row_edge_low() {
+    let mut b = Board::default();
+    let t = TileType::Player1;
+
+    assert_eq!(b.place_tile(1, t), PlaceResult::Success);
+}
+
+#[test]
+fn test_row_edge_high() {
+    let mut b = Board::default();
+    let t = TileType::Player1;
+
+    assert_eq!(b.place_tile(7, t), PlaceResult::Success);
 }

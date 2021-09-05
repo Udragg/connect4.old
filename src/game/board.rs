@@ -42,7 +42,7 @@ impl Board {
     ///
     /// Returns [PlaceResult::ColumnFull] if there are no empty spaces in the column
     pub fn place_tile(&mut self, column: usize, tile: TileType) -> PlaceResult {
-        if column < 1 || column >= self.dim.0 {
+        if column < 1 || column > self.dim.0 {
             return PlaceResult::InvalidColumn;
         } else if tile == TileType::Empty {
             return PlaceResult::InvalidTileType;
