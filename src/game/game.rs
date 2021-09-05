@@ -1,6 +1,9 @@
-use crate::game::{
-    board::Board,
-    components::{ActivePlayer, PlaceResult, Score, TileType},
+use crate::{
+    ai::ai::Ai,
+    game::{
+        board::Board,
+        components::{ActivePlayer, PlaceResult, Score, TileType},
+    },
 };
 // use std::io::Stdin;
 use std::io::{stdin, stdout, Write};
@@ -11,6 +14,8 @@ pub struct Game {
     board: Board,
     score: Score,
     active_player: ActivePlayer,
+
+    ai: Option<Ai>,
 }
 
 impl Game {
@@ -20,8 +25,14 @@ impl Game {
             board: Board::default(),
             score: Score::new(),
             active_player: ActivePlayer::Player1,
+            ai: None,
         }
     }
+
+    /// Adds an Ai instance to the game
+    // pub fn add_ai(&mut self) {
+    //     self.ai = Some(Ai::new(Board::default()));
+    // }
 
     fn get_input(&self) -> String {
         let mut buf = String::new();

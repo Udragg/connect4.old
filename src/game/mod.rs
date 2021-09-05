@@ -2,7 +2,7 @@
 #[cfg(not(test))]
 #[cfg(not(test))]
 /// Module for the Board struct
-mod board;
+pub(crate) mod board;
 
 #[cfg(test)]
 pub mod board;
