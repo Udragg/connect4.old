@@ -87,7 +87,7 @@ impl Board {
                         if x < self.dim.0 - 3
                             && self.board[y - 1][x + 1] == main_tile
                             && self.board[y - 2][x + 2] == main_tile
-                            && self.board[y - 2][x + 2] == main_tile
+                            && self.board[y - 3][x + 3] == main_tile
                         {
                             return main_tile;
                         }
@@ -96,7 +96,7 @@ impl Board {
                         if x > 2
                             && self.board[y - 1][x - 1] == main_tile
                             && self.board[y - 2][x - 2] == main_tile
-                            && self.board[y - 2][x - 2] == main_tile
+                            && self.board[y - 3][x - 3] == main_tile
                         {
                             return main_tile;
                         }

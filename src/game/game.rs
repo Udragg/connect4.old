@@ -72,6 +72,7 @@ impl Game {
     pub fn start(&mut self) {
         loop {
             print!("{}", self.board);
+            println!("{}'s turn", self.active_player);
 
             let row = self.get_row();
             if self.board.place_tile(row, self.active_player.to_tiletype()) != PlaceResult::Success
@@ -94,9 +95,9 @@ impl Game {
                 }
             }
         }
+        print!("{}", self.board);
         println!("{} wins the match", self.active_player);
         self.active_player.swap();
-        println!("{}", self.board);
 
         println!(
             "Player 1 points: {}\nPlayer 2 points: {}",

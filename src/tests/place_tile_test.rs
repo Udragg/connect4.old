@@ -7,10 +7,11 @@ use crate::game::{
 fn test_place() {
     let mut b = Board::default();
     let t = TileType::Player1;
-    let r = 4;
 
-    b.place_tile(r, t);
-    assert_eq!(t, b.board[5][r - 1]);
+    for x in 1..8 {
+        b.place_tile(x, t);
+        assert_eq!(b.board[5][x - 1], t);
+    }
 }
 
 #[test]

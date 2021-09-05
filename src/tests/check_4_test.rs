@@ -51,6 +51,53 @@ fn test_detect_4_up_left() {
 
     assert_ne!(b.check4(), Empty);
 }
+#[test]
+fn test_detect_3_right() {
+    let mut b = Board::default();
+    let t = Player1;
+
+    b.place_tile_static(0, 0, t);
+    b.place_tile_static(1, 0, t);
+    b.place_tile_static(2, 0, t);
+
+    assert_eq!(b.check4(), Empty);
+}
+
+#[test]
+fn test_detect_3_up() {
+    let mut b = Board::default();
+    let t = Player1;
+
+    b.place_tile_static(0, 0, t);
+    b.place_tile_static(0, 1, t);
+    b.place_tile_static(0, 2, t);
+
+    assert_eq!(b.check4(), Empty);
+}
+
+#[test]
+fn test_detect_3_up_right() {
+    let mut b = Board::default();
+    let t = Player1;
+
+    b.place_tile_static(0, 3, t);
+    b.place_tile_static(1, 2, t);
+    b.place_tile_static(2, 1, t);
+
+    assert_eq!(b.check4(), Empty);
+}
+
+#[test]
+fn test_detect_3_up_left() {
+    let mut b = Board::default();
+    let t = Player1;
+
+    b.place_tile_static(0, 0, t);
+    b.place_tile_static(1, 1, t);
+    b.place_tile_static(2, 2, t);
+
+    assert_eq!(b.check4(), Empty);
+}
 
 #[test]
 fn test_detect_4_red() {
