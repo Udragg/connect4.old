@@ -1,9 +1,9 @@
+//! This lib
 // #![deny(warnings)]
-#![warn(unused)]
-#![warn(non_camel_case_types)]
-#![warn(non_snake_case)]
-
+#![warn(missing_docs)]
+/// AI code
 pub mod ai;
+/// Game code
 pub mod game;
 
 /// Module containing tests

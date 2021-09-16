@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{fmt, io::stdin, str::FromStr};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TileType {
@@ -66,6 +66,42 @@ impl fmt::Display for ActivePlayer {
         match self {
             &Self::Player1 => write!(f, "Player 1"),
             &Self::Player2 => write!(f, "Player 2"),
+        }
+    }
+}
+
+pub enum Input {
+    Col(usize),
+    Yes,
+    No,
+    Enter,
+}
+
+impl Input {
+    pub fn get_input() -> Option<Self> {
+        let mut buf = String::new();
+
+        stdin().read_line(&mut buf).expect("Could not read stdin");
+
+        match Input::from_str(&buf) {
+            Ok(input) => Some(input),
+            Err(_) => None,
+        }
+    }
+}
+
+impl FromStr for Input {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().trim() {
+            "" => Ok(Input::Enter),
+            "yes" | "y" => Ok(Input::Yes),
+            "no" | "n" => Ok(Input::No),
+            b => match b.parse::<usize>() {
+                Ok(i) => Ok(Input::Col(i)),
+                Err(_) => Err("Could not parse str to Input"),
+            },
         }
     }
 }

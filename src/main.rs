@@ -1,4 +1,4 @@
-use connect4::game::game::Game;
+use connect4::game::Game;
 
 fn main() {
     let mut game = Game::new();

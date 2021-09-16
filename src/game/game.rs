@@ -1,24 +1,24 @@
+use std::io::{stdout, Write};
+
 use crate::{
-    ai::ai::Ai,
+    ai::Ai,
     game::{
         board::Board,
-        components::{ActivePlayer, PlaceResult, Score, TileType},
+        components::{ActivePlayer, Input, PlaceResult, Score, TileType},
     },
 };
-// use std::io::Stdin;
-use std::io::{stdin, stdout, Write};
 
 /// Game struct manages the course of the game.
 /// Contains the public methods to create and start a new game
-pub struct Game {
+pub struct Game<'a> {
     board: Board,
     score: Score,
     active_player: ActivePlayer,
 
-    ai: Option<Ai>,
+    ai: Option<Ai<'a>>,
 }
 
-impl Game {
+impl<'a> Game<'a> {
     /// Creates a new Game instance.
     pub fn new() -> Self {
         Self {
@@ -30,65 +30,58 @@ impl Game {
     }
 
     /// Adds an Ai instance to the game
-    // pub fn add_ai(&mut self) {
-    //     self.ai = Some(Ai::new(Board::default()));
-    // }
-
-    fn get_input(&self) -> String {
-        let mut buf = String::new();
-        match stdin().read_line(&mut buf) {
-            Ok(_) => buf.trim().to_string(),
-            Err(e) => panic!("error reading stdin: {}", e),
-        }
+    pub fn add_ai(&'a mut self) {
+        self.ai = Some(Ai::new(&self.board));
     }
 
-    fn ask_restart(&self) -> bool {
-        println!("Do you want to play again? Y/n");
-        let input = self.get_input();
+    /// Ask player if they want to start a new round.
+    fn ask_new_round(&self) -> bool {
+        print!("Do you want to start a new round? [Y/n] : ");
+        stdout()
+            .lock()
+            .flush()
+            .ok()
+            .expect("Could not flush stdout");
+        let input = Input::get_input();
 
-        match input.as_str() {
-            "y" | "yes" | "" => return true,
-            "n" | "no" => return false,
-            _ => {
-                println!("Interpreting vague answer as YES.");
-                return true;
-            }
+        if let Some(i) = input {
+            return match i {
+                Input::Yes | Input::Enter => true,
+                Input::No => false,
+                _ => self.ask_new_round(),
+            };
         }
+        self.ask_new_round()
     }
 
-    fn get_row(&mut self) -> usize {
-        loop {
-            print!("Row number: ");
-            stdout()
-                .lock()
-                .flush()
-                .ok()
-                .expect("Could not flush stdout");
-            let row_str = self.get_input();
+    /// Asks the column number the player wants to play
+    fn get_col(&mut self) -> usize {
+        print!("Player {}'s turn. Column number: ", self.active_player);
+        stdout()
+            .lock()
+            .flush()
+            .ok()
+            .expect("Could not flush stdout");
+        let input = Input::get_input();
 
-            match row_str.parse::<usize>() {
-                Ok(i) => {
-                    if i > 0 && i < 8 {
-                        return i;
-                    } else {
-                        println!("The number must be between 1 and 7");
-                    }
-                }
-                Err(_) => println!("The inpupt must be a number between 1 and 7"),
-            }
+        if let Some(Input::Col(c)) = input {
+            return c.min(7).max(1);
         }
+
+        println!("Input must be a number between 1 and 7");
+        self.get_col()
     }
 
     /// Starts a single round.
     pub fn start(&mut self) {
         loop {
             print!("{}", self.board);
-            println!("{}'s turn", self.active_player);
+            // println!("{}'s turn", self.active_player);
 
-            let row = self.get_row();
-            if self.board.place_tile(row, self.active_player.to_tiletype()) != PlaceResult::Success
+            let col = self.get_col();
+            if self.board.place_tile(col, self.active_player.to_tiletype()) != PlaceResult::Success
             {
-                println!("Unable to place piece at row {}", row);
+                println!("Unable to place piece at column {}", col);
                 continue;
             }
 
@@ -119,10 +112,10 @@ impl Game {
     /// Starts a new round after the end of every round, until the player decides to exit.
     pub fn start_loop(&mut self) {
         loop {
-            self.start();
-            if !self.ask_restart() {
+            if !self.ask_new_round() {
                 break;
             };
+            self.start();
             self.board.clear();
         }
     }

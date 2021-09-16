@@ -1,11 +1,11 @@
 use crate::game::board::Board;
 
-pub struct Ai {
-    board: Board,
+pub struct Ai<'a> {
+    board: &'a Board,
 }
 
-impl Ai {
-    pub(crate) fn new(board: Board) -> Self {
+impl<'a> Ai<'a> {
+    pub(crate) fn new(board: &'a Board) -> Self {
         Self { board }
     }
 }
