@@ -3,7 +3,7 @@ use std::io::{stdout, Write};
 use crate::{
     ai::Ai,
     game::{
-        board::Board,
+        board::C4Board,
         components::{ActivePlayer, Input, PlaceResult, Score, TileType},
     },
 };
@@ -11,7 +11,7 @@ use crate::{
 /// Game struct manages the course of the game.
 /// Contains the public methods to create and start a new game
 pub struct Game<'a> {
-    board: Board,
+    board: C4Board,
     score: Score,
     active_player: ActivePlayer,
 
@@ -22,7 +22,7 @@ impl<'a> Game<'a> {
     /// Creates a new Game instance.
     pub fn new() -> Self {
         Self {
-            board: Board::default(),
+            board: C4Board::default(),
             score: Score::new(),
             active_player: ActivePlayer::Player1,
             ai: None,
@@ -35,6 +35,7 @@ impl<'a> Game<'a> {
     }
 
     /// Ask player if they want to start a new round.
+    /// If the received input is invalid it will call itself recursively until a valid input is received
     fn ask_new_round(&self) -> bool {
         print!("Do you want to start a new round? [Y/n] : ");
         stdout()
@@ -55,6 +56,7 @@ impl<'a> Game<'a> {
     }
 
     /// Asks the column number the player wants to play
+    /// If the received input is invalid it will call itself recursively until a valid input is received
     fn get_col(&mut self) -> usize {
         print!("Player {}'s turn. Column number: ", self.active_player);
         stdout()

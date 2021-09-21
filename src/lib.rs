@@ -1,6 +1,6 @@
 //! This lib
-// #![deny(warnings)]
-#![warn(missing_docs)]
+#![deny(warnings)]
+#![deny(missing_docs)]
 /// AI code
 pub mod ai;
 /// Game code

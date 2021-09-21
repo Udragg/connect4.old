@@ -1,8 +1,9 @@
 // #[cfg(test)]
-use crate::game::{board::Board, components::TileType::*};
+use crate::game::{board::C4Board, components::TileType::*};
+
 #[test]
 fn test_detect_4_right() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player1;
 
     b.place_tile_static(0, 0, t);
@@ -15,7 +16,7 @@ fn test_detect_4_right() {
 
 #[test]
 fn test_detect_4_up() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player1;
 
     b.place_tile_static(0, 0, t);
@@ -28,7 +29,7 @@ fn test_detect_4_up() {
 
 #[test]
 fn test_detect_4_up_right() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player1;
 
     b.place_tile_static(0, 3, t);
@@ -41,7 +42,7 @@ fn test_detect_4_up_right() {
 
 #[test]
 fn test_detect_4_up_left() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player1;
 
     b.place_tile_static(0, 0, t);
@@ -53,7 +54,7 @@ fn test_detect_4_up_left() {
 }
 #[test]
 fn test_detect_3_right() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player1;
 
     b.place_tile_static(0, 0, t);
@@ -65,7 +66,7 @@ fn test_detect_3_right() {
 
 #[test]
 fn test_detect_3_up() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player1;
 
     b.place_tile_static(0, 0, t);
@@ -77,7 +78,7 @@ fn test_detect_3_up() {
 
 #[test]
 fn test_detect_3_up_right() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player1;
 
     b.place_tile_static(0, 3, t);
@@ -89,7 +90,7 @@ fn test_detect_3_up_right() {
 
 #[test]
 fn test_detect_3_up_left() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player1;
 
     b.place_tile_static(0, 0, t);
@@ -101,7 +102,7 @@ fn test_detect_3_up_left() {
 
 #[test]
 fn test_detect_4_red() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player1;
 
     b.place_tile_static(0, 0, t);
@@ -114,7 +115,7 @@ fn test_detect_4_red() {
 
 #[test]
 fn test_detect_4_yellow() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = Player2;
 
     b.place_tile_static(0, 0, t);
@@ -127,7 +128,7 @@ fn test_detect_4_yellow() {
 
 #[test]
 fn test_detect_4_fail() {
-    let b = Board::default();
+    let b = C4Board::default();
 
     assert_eq!(b.check4(), Empty);
 }

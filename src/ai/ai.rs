@@ -1,11 +1,12 @@
-use crate::game::board::Board;
+use crate::game::board::C4Board;
 
+/// AI struct
 pub struct Ai<'a> {
-    board: &'a Board,
+    _board: &'a C4Board,
 }
 
 impl<'a> Ai<'a> {
-    pub(crate) fn new(board: &'a Board) -> Self {
-        Self { board }
+    pub(crate) fn new(_board: &'a C4Board) -> Self {
+        todo!()
     }
 }

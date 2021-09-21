@@ -20,6 +20,12 @@ impl fmt::Display for TileType {
     }
 }
 
+impl Default for TileType {
+    fn default() -> Self {
+        Self::Empty
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PlaceResult {
     Success,

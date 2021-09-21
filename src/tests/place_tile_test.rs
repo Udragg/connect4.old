@@ -1,11 +1,11 @@
 use crate::game::{
-    board::Board,
+    board::C4Board,
     components::{PlaceResult, TileType},
 };
 
 #[test]
 fn test_place() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = TileType::Player1;
 
     for x in 1..8 {
@@ -16,7 +16,7 @@ fn test_place() {
 
 #[test]
 fn test_column_overflow() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = TileType::Player1;
     let r = 4;
 
@@ -29,7 +29,7 @@ fn test_column_overflow() {
 
 #[test]
 fn test_row_high() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = TileType::Player1;
 
     assert_eq!(b.place_tile(8, t), PlaceResult::InvalidColumn);
@@ -37,7 +37,7 @@ fn test_row_high() {
 
 #[test]
 fn test_row_low() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = TileType::Player1;
 
     assert_eq!(b.place_tile(0, t), PlaceResult::InvalidColumn);
@@ -45,7 +45,7 @@ fn test_row_low() {
 
 #[test]
 fn test_row_edge_low() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = TileType::Player1;
 
     assert_eq!(b.place_tile(1, t), PlaceResult::Success);
@@ -53,7 +53,7 @@ fn test_row_edge_low() {
 
 #[test]
 fn test_row_edge_high() {
-    let mut b = Board::default();
+    let mut b = C4Board::default();
     let t = TileType::Player1;
 
     assert_eq!(b.place_tile(7, t), PlaceResult::Success);

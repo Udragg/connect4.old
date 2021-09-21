@@ -1,37 +1,24 @@
 use crate::game::components::{PlaceResult, TileType};
-use std::{fmt, vec};
+use std::fmt;
 
+pub(crate) type C4Board = Board<6, 7>;
+
+#[derive(Debug)]
 /// Struct containing board variables & logic
-pub struct Board {
+pub struct Board<const H: usize, const W: usize> {
     #[cfg(not(test))]
-    board: Vec<Vec<TileType>>,
+    board: [[TileType; W]; H],
     #[cfg(test)]
-    pub board: Vec<Vec<TileType>>,
-    dim: (usize, usize), // (x, y)
+    pub board: [[TileType; W]; H],
+    // dim: (usize, usize), // (x, y)
 }
 
-impl Board {
-    /// Create an empty 7x6 board
-    pub fn default() -> Self {
-        let dim = (7, 6);
-        let board = vec![vec![TileType::Empty; dim.0]; dim.1];
-        Self { board, dim }
-    }
-
-    /// Create an empty board with custom dimensions
-    #[allow(dead_code)]
-    pub fn new(dim_x: usize, dim_y: usize) -> Self {
-        let dim = (dim_x, dim_y);
-        let board = vec![vec![TileType::Empty; dim.0]; dim.1];
-        Self { board, dim }
-    }
-
+impl<const H: usize, const W: usize> Board<H, W> {
     /// Create a 7x6 board filled with custom tile type
     #[allow(dead_code)]
     pub fn new_filled(tile_type: TileType) -> Self {
-        let dim = (7, 6);
-        let board = vec![vec![tile_type; dim.0]; dim.1];
-        Self { board, dim }
+        let board = [[tile_type; W]; H];
+        Self { board }
     }
 
     /// Place a tile in specified column
@@ -42,14 +29,14 @@ impl Board {
     ///
     /// Returns [PlaceResult::ColumnFull] if there are no empty spaces in the column
     pub fn place_tile(&mut self, column: usize, tile: TileType) -> PlaceResult {
-        if column < 1 || column > self.dim.0 {
+        if column < 1 || column > W {
             return PlaceResult::InvalidColumn;
         } else if tile == TileType::Empty {
             return PlaceResult::InvalidTileType;
         }
-        for y in 1..=self.dim.1 {
-            if self.board[self.dim.1 - y][column - 1] == TileType::Empty {
-                self.board[self.dim.1 - y][column - 1] = tile;
+        for y in 1..=H {
+            if self.board[H - y][column - 1] == TileType::Empty {
+                self.board[H - y][column - 1] = tile;
                 return PlaceResult::Success;
             }
         }
@@ -61,12 +48,12 @@ impl Board {
     /// # Return
     /// Returns the [TileType] of the 4 tiles in a row, or [TileType::Empty] if no 4 in a rows where found
     pub fn check4(&self) -> TileType {
-        for y in 0..self.dim.1 {
-            for x in 0..self.dim.0 {
+        for y in 0..H {
+            for x in 0..W {
                 let main_tile = self.board[y][x];
                 if main_tile != TileType::Empty {
                     // check right
-                    if x < self.dim.0 - 3
+                    if x < W - 3
                         && self.board[y][x + 1] == main_tile
                         && self.board[y][x + 2] == main_tile
                         && self.board[y][x + 3] == main_tile
@@ -84,7 +71,7 @@ impl Board {
                         }
 
                         // check up & right
-                        if x < self.dim.0 - 3
+                        if x < W - 3
                             && self.board[y - 1][x + 1] == main_tile
                             && self.board[y - 2][x + 2] == main_tile
                             && self.board[y - 3][x + 3] == main_tile
@@ -108,8 +95,9 @@ impl Board {
         TileType::Empty
     }
 
+    ///
     pub fn clear(&mut self) {
-        self.board = vec![vec![TileType::Empty; self.dim.0]; self.dim.1]
+        self.board = [[TileType::Empty; W]; H]
     }
 
     #[cfg(test)]
@@ -119,12 +107,20 @@ impl Board {
     }
 }
 
-impl fmt::Display for Board {
+impl<const H: usize, const W: usize> Default for Board<H, W> {
+    /// Create an empty 7x6 board
+    fn default() -> Self {
+        let board = [[TileType::Empty; W]; H];
+        Self { board }
+    }
+}
+
+impl<const H: usize, const W: usize> fmt::Display for Board<H, W> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         writeln!(f, "#-1--2--3--4--5--6--7-#")?;
-        for y in 0..self.dim.1 {
+        for y in 0..H {
             write!(f, "|")?;
-            for x in 0..self.dim.0 {
+            for x in 0..W {
                 match self.board[y][x] {
                     TileType::Empty => write!(f, " . ")?,
                     TileType::Player1 => write!(f, " x ")?,
